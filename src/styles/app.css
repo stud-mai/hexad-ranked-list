@@ -1,0 +1,28 @@
+.app h1 {
+  text-align: center;
+}
+
+.app .rank-star {
+  position: relative;
+}
+
+.app .rank-star:after {
+  content: "\2605";
+  margin-left: 10px;
+  color: gold;
+  transform: scale(1.5);
+  position: absolute;
+}
+
+.app .icon-star:before {
+  content: "\2605";
+  margin-right: 5px;
+}
+
+.react-rater-star {
+  font-size: 2.5rem;
+}
+
+.react-rater-star.is-active {
+  color: gold;
+}
