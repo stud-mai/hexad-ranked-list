@@ -40,8 +40,14 @@ describe('App Container', () => {
 			expect(header.text()).toEqual('Favourite Movie List');
 		});
 
+		it('should have disabled "Random Rating" button', () => {
+			const button = wrapper.find('Row .header Button');
+			expect(button.text()).toEqual('Random Rating');
+			expect(button.prop('disabled')).toBeTruthy();
+		});
+
 		it('should have empty movie list rendered', () => {
-			const listRow = wrapper.find('Row');
+			const listRow = wrapper.find('.movie-item');
 			expect(listRow.exists()).toBeFalsy();
 		});
 
@@ -68,46 +74,52 @@ describe('App Container', () => {
 				).find(App);
 			});
 
+			it('should have enabled "Random Rating" button', () => {
+				const button = wrapper.find('Row .header Button');
+				expect(button.text()).toEqual('Random Rating');
+				expect(button.prop('disabled')).toBeFalsy();
+			});
+
 			it('should render movie list', () => {
-				const movieRows = wrapper.find('Row');
-				expect(movieRows.length).toEqual(3);
+				const movieItems = wrapper.find('Row .movie-item');
+				expect(movieItems.length).toEqual(3);
 			});
 
 			it('should have movie title', () => {
-				const movieTitle = wrapper.find('Col').at(0);
+				const movieTitle = wrapper.find('.movie-item').find('Col').at(0);
 				expect(movieTitle.text()).toEqual('1. Pulp Fiction');
 			});
 
 			it('should have link on imdb movie description', () => {
-				const movieLink = wrapper.find('Col').at(0).find('a');
+				const movieLink = wrapper.find('.movie-item').find('Col').at(0).find('a');
 				expect(movieLink.text()).toEqual('Pulp Fiction');
 				expect(movieLink.prop('href')).toEqual('https://www.imdb.com/title/tt01');
 				expect(movieLink.prop('target')).toEqual('_blank');
 			});
 
 			it('should have rank of movie', () => {
-				const movieRank = wrapper.find('Col').at(1);
+				const movieRank = wrapper.find('.movie-item').find('Col').at(1);
 				expect(movieRank.text()).toEqual('5');
 			});
 
 			it('should have correct style class for rank of movie', () => {
-				const movieRank = wrapper.find('Col').at(1);
+				const movieRank = wrapper.find('.movie-item').find('Col').at(1);
 				expect(movieRank.find('strong').hasClass('rank-star')).toBeTruthy();
 			});
 
 			it('should have button to open movie rater', () => {
-				const button = wrapper.find('Col').at(2).find('Button');
+				const button = wrapper.find('.movie-item').find('Col').at(2).find('Button');
 				expect(button.exists()).toBeTruthy();
 				expect(button.text()).toEqual('Rate');
 			});
 
 			it('should have correct style class for rate button', () => {
-				const button = wrapper.find('Col').at(2).find('Button');
+				const button = wrapper.find('.movie-item').find('Col').at(2).find('Button');
 				expect(button.find('span').hasClass('icon-star')).toBeTruthy();
 			});
 
 			it('should dispatch openMovieRater action on rate button click', () => {
-				const button = wrapper.find('Row').at(1).find('Col').at(2).find('Button');
+				const button = wrapper.find('Row .movie-item').at(1).find('Col').at(2).find('Button');
 
 				button.simulate('click');
 				expect(mockedStore.dispatch).toHaveBeenCalledTimes(2);

@@ -21,11 +21,26 @@ export class App extends React.Component {
 
 		return (
 			<Container className="app">
-				<h1>Favourite Movie List</h1>
+				<Row className="header">
+					<Col xs={12} sm={8} xl={10} className="align-self-center">
+						<h1>Favourite Movie List</h1>
+					</Col>
+					<Col xs={12} sm={4} xl={2} className="align-self-center">
+						<Button
+							block
+							variant="outline-info"
+							className="pull-right"
+							onClick={console.log}
+							disabled={!rankList.length}
+						>
+							<span className="icon-star">Random Rating</span>
+						</Button>
+					</Col>
+				</Row>
 				<ListGroup>
 					{rankList.map(({ title, rank, id }, index) => (
 						<ListGroup.Item key={id} variant={index % 2 === 0 ? '' : 'info'}>
-							<Row>
+							<Row className="movie-item">
 								<Col xs={8} className="align-self-center">
 									<span>{index + 1}. </span>
 									<a href={`${url}${id}`} target="_blank" rel="noopener noreferrer">{title}</a>
