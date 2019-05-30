@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 export const INITIAL_STATE = {
     rankList: [],
-    movieBeingRated: {}
+    movieBeingRated: {},
+    randomRatingActivated: false
 };
 
 const loadMovieList = (state, { movieList }) => ({ ...state, rankList: movieList });
@@ -30,12 +31,18 @@ const updateMovieRank = (state, { id, rank }) => {
     };
 };
 
+const startRandomRating = (state) => ({ ...state, randomRatingActivated: true });
+
+const stopRandomRating = (state) => ({ ...state, randomRatingActivated: false });
+
 const rankList = (state = INITIAL_STATE, action) => {
     const handlers = {
         [actionTypes.LOAD_MOVIE_LIST]: loadMovieList,
         [actionTypes.OPEN_MOVIE_RATER]: openMovieRater,
         [actionTypes.CLOSE_MOVIE_RATER]: closeMovieRater,
-        [actionTypes.UPDATE_MOVIE_RANK]: updateMovieRank
+        [actionTypes.UPDATE_MOVIE_RANK]: updateMovieRank,
+        [actionTypes.START_RANDOM_RATING]: startRandomRating,
+        [actionTypes.STOP_RANDOM_RATING]: stopRandomRating
     }
     return handlers[action.type] ? handlers[action.type](state, action) : state;
 };

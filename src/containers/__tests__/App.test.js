@@ -16,7 +16,8 @@ describe('App Container', () => {
 	describe('Initial render', () => {
 		let mockState = {
 			rankList: [],
-			movieBeingRated: {}
+			movieBeingRated: {},
+			randomRatingActivated: false
 		};
 		let mockedStore;
 		let wrapper;
@@ -42,7 +43,7 @@ describe('App Container', () => {
 
 		it('should have disabled "Random Rating" button', () => {
 			const button = wrapper.find('Row .header Button');
-			expect(button.text()).toEqual('Random Rating');
+			expect(button.text()).toEqual('Start Random Rating');
 			expect(button.prop('disabled')).toBeTruthy();
 		});
 
@@ -59,7 +60,8 @@ describe('App Container', () => {
 		describe('Render with movie list', () => {
 			let mockState = {
 				rankList: movieListMocked,
-				movieBeingRated: {}
+				movieBeingRated: {},
+				randomRatingActivated: false
 			};
 			let mockedStore;
 			let wrapper;
@@ -76,8 +78,15 @@ describe('App Container', () => {
 
 			it('should have enabled "Random Rating" button', () => {
 				const button = wrapper.find('Row .header Button');
-				expect(button.text()).toEqual('Random Rating');
+				expect(button.text()).toEqual('Start Random Rating');
 				expect(button.prop('disabled')).toBeFalsy();
+			});
+
+			it('should dispatch startRandomRating action on "Random Rating" button click', () => {
+				const button = wrapper.find('Row .header Button');
+
+				button.simulate('click');
+				expect(mockedStore.dispatch).toHaveBeenLastCalledWith(actions.startRandomRating())
 			});
 
 			it('should render movie list', () => {
@@ -136,19 +145,35 @@ describe('App Container', () => {
 		describe('Render with movie data set', () => {
 			let mockState = {
 				rankList: movieListMocked,
-				movieBeingRated: { ...movieListMocked[1] }
+				movieBeingRated: { ...movieListMocked[1] },
+				randomRatingActivated: true
 			};
 			let mockedStore;
+			let wrapper
 			let modalMovieRater;
 
 			beforeEach(() => {
 				mockedStore = createMockStore(mockState);
 				mockedStore.dispatch = jest.fn();
-				modalMovieRater = mount(
+				wrapper = mount(
 					<Provider store={mockedStore}>
 						<App />
 					</Provider>
-				).find('ModalMovieRater');
+				)
+				modalMovieRater = wrapper.find('ModalMovieRater');
+			});
+
+			it('should have enabled "Random Rating" button', () => {
+				const button = wrapper.find('Row .header Button');
+				expect(button.text()).toEqual('Stop Random Rating');
+				expect(button.prop('disabled')).toBeFalsy();
+			});
+
+			it('should dispatch stopRandomRating action on "Random Rating" button click', () => {
+				const button = wrapper.find('Row .header Button');
+
+				button.simulate('click');
+				expect(mockedStore.dispatch).toHaveBeenLastCalledWith(actions.stopRandomRating())
 			});
 
 			it('should have correct props on ModalMovieRater component', () => {

@@ -7,7 +7,8 @@ describe('App Reducer', () => {
     it('should return the initial state', () => {
         expect(reducer(undefined, {})).toEqual({
             rankList: [],
-            movieBeingRated: {}
+            movieBeingRated: {},
+            randomRatingActivated: false
         });
     });
 
@@ -17,7 +18,8 @@ describe('App Reducer', () => {
 
         expect(expectedState).toEqual({
             rankList: [{}],
-            movieBeingRated: {}
+            movieBeingRated: {},
+            randomRatingActivated: false
         });
     });
 
@@ -36,7 +38,8 @@ describe('App Reducer', () => {
                 id: 'movie-id',
                 rank: 5,
                 title: 'Test Movie'
-            }
+            },
+            randomRatingActivated: false
         });
     });
 
@@ -46,7 +49,8 @@ describe('App Reducer', () => {
 
         expect(expectedState).toEqual({
             rankList: [],
-            movieBeingRated: {}
+            movieBeingRated: {},
+            randomRatingActivated: false
         });
     });
 
@@ -76,6 +80,28 @@ describe('App Reducer', () => {
                 rank: 10,
                 id: "tt016"
             }
+        });
+    });
+
+    it('should set value for randomRatingActivated property equal true', () => {
+        const action = { type: actionTypes.START_RANDOM_RATING };
+        const expectedState = reducer({ ...INITIAL_STATE, rankList: [{}] }, action);
+
+        expect(expectedState).toEqual({
+            rankList: [{}],
+            movieBeingRated: {},
+            randomRatingActivated: true
+        });
+    });
+
+    it('should set value for randomRatingActivated property equal false', () => {
+        const action = { type: actionTypes.STOP_RANDOM_RATING };
+        const expectedState = reducer({ ...INITIAL_STATE, randomRatingActivated: true }, action);
+
+        expect(expectedState).toEqual({
+            rankList: [],
+            movieBeingRated: {},
+            randomRatingActivated: false
         });
     });
 });

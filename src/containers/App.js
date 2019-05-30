@@ -16,24 +16,36 @@ export class App extends React.Component {
 		this.props.loadMovieList(movieList);
 	}
 
+	onRandomRatingButtonClick = () => {
+		const { randomRatingActivated, startRandomRating, stopRandomRating } = this.props;
+
+		if (randomRatingActivated) {
+			stopRandomRating();
+		} else {
+			startRandomRating();
+		}
+	}
+
 	render() {
-		const { rankList, movieBeingRated, openMovieRater, closeMovieRater, updateMovieRank } = this.props;
+		const { rankList, movieBeingRated, randomRatingActivated, openMovieRater, closeMovieRater, updateMovieRank } = this.props;
 
 		return (
 			<Container className="app">
 				<Row className="header">
-					<Col xs={12} sm={8} xl={10} className="align-self-center">
+					<Col xs={12} sm={8} xl={9} className="align-self-center">
 						<h1>Favourite Movie List</h1>
 					</Col>
-					<Col xs={12} sm={4} xl={2} className="align-self-center">
+					<Col xs={12} sm={4} xl={3} className="align-self-center">
 						<Button
 							block
 							variant="outline-info"
 							className="pull-right"
-							onClick={console.log}
+							onClick={this.onRandomRatingButtonClick}
 							disabled={!rankList.length}
 						>
-							<span className="icon-star">Random Rating</span>
+							<span className="icon-star">
+								{randomRatingActivated ? 'Stop' : 'Start'} Random Rating
+							</span>
 						</Button>
 					</Col>
 				</Row>
@@ -82,20 +94,25 @@ App.propTypes = {
 		rank: propTypes.number,
 		title: propTypes.string
 	}).isRequired,
+	randomRatingActivated: propTypes.bool.isRequired,
 
 	loadMovieList: propTypes.func.isRequired,
 	openMovieRater: propTypes.func.isRequired,
 	closeMovieRater: propTypes.func.isRequired,
-	updateMovieRank: propTypes.func.isRequired
+	updateMovieRank: propTypes.func.isRequired,
+	startRandomRating: propTypes.func.isRequired,
+	stopRandomRating: propTypes.func.isRequired,
 }
 
-const mapStateToProps = ({ rankList, movieBeingRated }) => ({ rankList, movieBeingRated })
+const mapStateToProps = ({ rankList, movieBeingRated, randomRatingActivated }) => ({ rankList, movieBeingRated, randomRatingActivated })
 
 const mapDispatchToProps = (dispatch) => ({
 	loadMovieList: (movieList) => dispatch(rankListActions.loadMovieList(movieList)),
 	openMovieRater: (id, rank, title) => dispatch(rankListActions.openMovieRater(id, rank, title)),
 	closeMovieRater: () => dispatch(rankListActions.closeMovieRater()),
-	updateMovieRank: (id, rank) => dispatch(rankListActions.updateMovieRank(id, rank))
+	updateMovieRank: (id, rank) => dispatch(rankListActions.updateMovieRank(id, rank)),
+	startRandomRating: () => dispatch(rankListActions.startRandomRating()),
+	stopRandomRating: () => dispatch(rankListActions.stopRandomRating())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

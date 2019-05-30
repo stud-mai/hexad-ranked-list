@@ -35,4 +35,18 @@ describe('Action creators', () => {
             rank: 10
         });
     });
+
+    it('should create action to start random rating', () => {
+        expect(actions.startRandomRating).toBeDefined();
+        expect(actions.startRandomRating()).toEqual({
+            type: actionTypes.START_RANDOM_RATING
+        });
+    });
+
+    it('should create action to stop random rating', () => {
+        expect(actions.stopRandomRating).toBeDefined();
+        expect(actions.stopRandomRating()).toEqual({
+            type: actionTypes.STOP_RANDOM_RATING
+        });
+    });
 });
